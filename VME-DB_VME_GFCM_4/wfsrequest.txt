@@ -1,0 +1,1 @@
+http://www.fao.org/figis/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=vme%3Aother_areas&outputFormat=shape-zip&cql_filter=VME_ID%20%3D%20%27VME_GFCM_4%27&format_options=filename%3AVME-DB_VME_GFCM_4.zip
