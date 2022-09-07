@@ -253,3 +253,8 @@ Map_other_trawl_longline
 #        dpi = 400)
 ```
 
+## Next Steps
+
+1. Add inset maps
+2. Polish output tables
+3. Add tables to repo README
