@@ -2,4 +2,4 @@
 
 Data provided by Global Fishing Watch
 
-![](Map_Other_trawl_longline_2019.png)
+![](output/Map_Other_trawl_longline_2019.png)
