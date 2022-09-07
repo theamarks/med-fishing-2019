@@ -27,6 +27,7 @@ library(maps) # graphing maps
 library(rnaturalearth) # map data source, website with descriptions
 library(sf) # working with coordinates in ggplot
 library(ggspatial)
+library(viridisLite) # color
 
 
 ############# Import Data #################
@@ -147,8 +148,6 @@ fishing_trawl_long <- analyst_fishing_data %>%
 land_sp <- ne_download(scale = 10, type = 'countries', category = 'cultural', returnclass = 'sp')
 land_df <- fortify(land_sp) # covert to dataframe for ggplot
 
-# Load color Viridis Color scale
-library(viridisLite)
 
 # What are the lat & long bound of closure poly
 summary(closure_poly_sp)$bbox
