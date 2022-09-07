@@ -8,7 +8,7 @@ output:
     toc_float: true
     toc_collapsed: true
     toc_depth: 3
-    theme: spacelab
+    theme: yeti
 ---
 
 ```{r setup, include=FALSE}
@@ -30,19 +30,27 @@ library(ggspatial)
 library(viridisLite) # color
 ```
 
+```{r directories_paths, warning=TRUE}
+dir.create("./output") # create output directory
+
+data_path <- file.path("data") # data path
+out_path <- file.path("output") # output path
+```
+
+
 ```{r import_data}
-analyst_fishing_data <- read_csv("./data/analyst_fishing_data.csv")
+analyst_fishing_data <- read_csv(file = file.path(data_path, "analyst_fishing_data.csv"))
 # Look at dimensions of data
 dim(analyst_fishing_data)
 # Look at summary stats of data
 summary(analyst_fishing_data)
 
 ### Read in 2 closure shapefiles from Rproject
-closure_poly_sp <- readOGR("./data/VME-DB_VME_GFCM_1")
+closure_poly_sp <- readOGR(file.path(data_path, "VME-DB_VME_GFCM_1"))
 # Look at polygon
 #plot(closure_poly_sp)
 
-other_poly_sp <- readOGR("./data/VME-DB_VME_GFCM_4")
+other_poly_sp <- readOGR(file.path(data_path, "VME-DB_VME_GFCM_4"))
 # Look at polygon
 #plot(other_poly_sp)
 ```
@@ -59,11 +67,16 @@ other_poly_df <- fortify(other_poly_sp)
 # Graph fishing activity by fishing_class and display closure polygons
 test_plot <- ggplot() +
   geom_point(data = analyst_fishing_data,
-             aes(x = lon_bin, y = lat_bin, color = fishing_class)) +
+             aes(x = lon_bin, y = lat_bin,
+                 color = fishing_class)) +
   geom_polygon(data = closure_poly_df,
-               aes(x = long, y = lat), color = 'black', fill = NA) +
+               aes(x = long, y = lat),
+               color = 'black',
+               fill = NA) +
   geom_polygon(data = other_poly_df,
-               aes(x = long, y = lat), color = "black", fill = NA) +
+               aes(x = long, y = lat),
+               color = "black",
+               fill = NA) +
   theme_bw() +
   labs(x = "Longitude", y = "Latitude")
 
@@ -108,7 +121,7 @@ fish_hrs_other_sum <- fishing_in_other %>%
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
 fish_hrs_other_sum
 
-write_csv(fish_hrs_other_sum, "./output/2019_FishHrs_Other_ByGear.csv")
+write_csv(fish_hrs_other_sum, file.path(out_path, "2019_FishHrs_Other_ByGear.csv"))
 
 # Combine clipped fishing data from both closed areas into single dataframe
 fishing_in_both <- rbind(fishing_in_closure, fishing_in_other)
@@ -176,7 +189,7 @@ Map_closure_trawl_longline
 
 # Save map to Rproject
 # ggsave(Map_closure_trawl_longline, 
-#        filename = "./output/Map_Closure_trawl_longline_2019.png",
+#        filename = file.path(out_path, "Map_Closure_trawl_longline_2019.png"),
 #        width = 10,
 #        units = c("in"),
 #        dpi = 400)
@@ -197,7 +210,8 @@ Map_other_trawl_longline <- ggplot() +
                          name = "Fishing Gear", 
                          labels = c("Drifting Longlines", "Set Longlines", "Trawlers")) +
   geom_polygon(data = other_poly_df, # other closure area poly
-               aes(x = long, y = lat), color = 'black', fill = NA) +
+               aes(x = long, y = lat), 
+               color = 'black', fill = NA) +
   coord_sf(xlim = c(3, 10), ylim = c(40, 45), 
            crs = "+proj=longlat +datum=WGS84 +no_defs",
            expand = FALSE) + # don't add extra to edges of limits
@@ -212,7 +226,7 @@ Map_other_trawl_longline
 
 # Save map to Rproject
 # ggsave(Map_other_trawl_longline, 
-#        filename = "./output/Map_Other_trawl_longline_2019.png",
+#        filename = file.path(out_path, "Map_Other_trawl_longline_2019.png"),
 #        width = 10,
 #        units = c("in"),
 #        dpi = 400)
