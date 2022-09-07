@@ -18,6 +18,8 @@ Provide a map or two showing the closure areas overlaid with fishing effort for 
 
 ------------------------------------------------------------------------
 
+![](output/Map_Closure_trawl_longline_2019.png)
+
 ![](output/Map_Other_trawl_longline_2019.png)
 
-![](output/Map_Closure_trawl_longline_2019.png)
+
