@@ -5,3 +5,5 @@ Basic example of spatial analysis of AIS (Automatic Identification System) fishi
 *Data provided by Global Fishing Watch*
 
 ![](output/Map_Other_trawl_longline_2019.png)
+
+![](output/Map_Closure_trawl_longline_2019.png)
