@@ -36,6 +36,7 @@ library(rnaturalearth) # map data source, website with descriptions
 library(sf) # working with coordinates in ggplot
 library(ggspatial)
 library(viridisLite) # color
+library(kableExtra) # table formatting
 ```
 
 ```{r directories_paths, warning=TRUE}
@@ -63,7 +64,7 @@ other_poly_sp <- readOGR(file.path(data_path, "VME-DB_VME_GFCM_4"))
 #plot(other_poly_sp)
 ```
 
-## Fishing Hours
+## Question 1: Fishing Hours
 
 Calculate the total fishing hours, by gear type, inside both closure areas in 2019.
 
@@ -141,13 +142,17 @@ unique(fishing_in_both$year)
 fish_hrs_both_sum <- fishing_in_both %>% 
   group_by(fishing_class) %>% # group data by gear type
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
-fish_hrs_both_sum
+
+knitr::kable(fish_hrs_both_sum, 
+             caption = "Total Fishing Hours by fishing class within 'closure' and 'other' polygons",
+             col.names = gsub("[_]", " ", names(fish_hrs_both_sum))) %>%
+  kableExtra::kable_styling(full_width = F)
 
 # Save .csv of findings to Rproject folder
 # write_csv(fish_hrs_both_sum, "./output/2019_FishHrs_BothClosure_ByGear.csv")
 ```
 
-## Closure Area Maps
+## Question 2: Closure Area Maps
 
 Provide a map or two showing the closure areas overlaid with fishing effort for trawlers and longliners.
 
