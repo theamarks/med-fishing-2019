@@ -31,18 +31,18 @@ library(viridisLite) # color
 
 
 ############# Import Data #################
-analyst_fishing_data <- read_csv("analyst_fishing_data.csv")
+analyst_fishing_data <- read_csv("./data/analyst_fishing_data.csv")
 # Look at dimensions of data
 dim(analyst_fishing_data)
 # Look at summary stats of data
 summary(analyst_fishing_data)
 
 ### Read in 2 closure shapefiles from Rproject
-closure_poly_sp <- readOGR("./VME-DB_VME_GFCM_1")
+closure_poly_sp <- readOGR("./data/VME-DB_VME_GFCM_1")
 # Look at polygon
 #plot(closure_poly_sp)
 
-other_poly_sp <- readOGR("./VME-DB_VME_GFCM_4")
+other_poly_sp <- readOGR("./data/VME-DB_VME_GFCM_4")
 # Look at polygon
 #plot(other_poly_sp)
 ##########################################
@@ -98,7 +98,7 @@ fish_hrs_closure_sum <- fishing_in_closure %>%
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
 fish_hrs_closure_sum
 
-write_csv(fish_hrs_closure_sum, "2019_FishHrs_Closure_ByGear.csv")
+write_csv(fish_hrs_closure_sum, "./output/2019_FishHrs_Closure_ByGear.csv")
 
 # clip fishing points within other polygon
 fishing_in_other_sp <- analyst_fishing_data_sp[other_poly_sp,]
@@ -110,7 +110,7 @@ fish_hrs_other_sum <- fishing_in_other %>%
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
 fish_hrs_other_sum
 
-write_csv(fish_hrs_other_sum, "2019_FishHrs_Other_ByGear.csv")
+write_csv(fish_hrs_other_sum, "./output/2019_FishHrs_Other_ByGear.csv")
 
 # Combine clipped fishing data from both closed areas into single dataframe
 fishing_in_both <- rbind(fishing_in_closure, fishing_in_other)
@@ -125,7 +125,7 @@ fish_hrs_both_sum <- fishing_in_both %>%
 fish_hrs_both_sum
 
 # Save .csv of findings to Rproject folder
-write_csv(fish_hrs_both_sum, "2019_FishHrs_BothClosure_ByGear.csv")
+write_csv(fish_hrs_both_sum, "./output/2019_FishHrs_BothClosure_ByGear.csv")
 
 
 
@@ -180,7 +180,7 @@ Map_closure_trawl_longline
 
 # Save map to Rproject
 ggsave(Map_closure_trawl_longline, 
-       filename = "Map_Closure_trawl_longline_2019.png",
+       filename = "./output/Map_Closure_trawl_longline_2019.png",
        width = 10,
        units = c("in"),
        dpi = 400)
@@ -218,15 +218,8 @@ Map_other_trawl_longline
 
 # Save map to Rproject
 ggsave(Map_other_trawl_longline, 
-       filename = "Map_Other_trawl_longline_2019.png",
+       filename = "./output/Map_Other_trawl_longline_2019.png",
        width = 10,
        units = c("in"),
        dpi = 400)
   
-  
-
-### Question 3 ###################
-# Describe a few patterns that you see in the data/maps and 
-# comment on how these trends might be impacted by AIS use.
-
-
