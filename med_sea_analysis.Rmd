@@ -255,6 +255,9 @@ Map_other_trawl_longline
 
 ## Next Steps
 
-1. Add inset maps
-2. Polish output tables
-3. Add tables to repo README
+- Maps
+  - Add inset map
+  - Reorder display order of points (purple, teal, yellow)
+- Polish output tables
+- Add tables to repo README
+- Convert to Quarto doc
