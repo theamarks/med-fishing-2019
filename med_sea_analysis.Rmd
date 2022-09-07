@@ -11,6 +11,14 @@ output:
     theme: yeti
 ---
 
+## Purpose
+
+Coding test for Fisheries Analyst position at Global Fishing Watch 2021.
+
+## Background
+
+Data files are fishing activity in the Mediterranean Sea from 2019. Fishing hours are binned on a 0.05 degree grid. Shapefiles are of closed fishing areas. 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE, message = FALSE, results = "hide", warning = FALSE)
 ```
@@ -55,9 +63,9 @@ other_poly_sp <- readOGR(file.path(data_path, "VME-DB_VME_GFCM_4"))
 #plot(other_poly_sp)
 ```
 
-## Question 1
+## Fishing Hours
 
-Calculate total fishing hours, by gear type inside both closure areas in 2019.
+Calculate the total fishing hours, by gear type, inside both closure areas in 2019.
 
 ```{r Q1, results="markup"}
 # create dataframe from shapefile for ggplot
@@ -139,7 +147,7 @@ fish_hrs_both_sum
 # write_csv(fish_hrs_both_sum, "./output/2019_FishHrs_BothClosure_ByGear.csv")
 ```
 
-## Question 2
+## Closure Area Maps
 
 Provide a map or two showing the closure areas overlaid with fishing effort for trawlers and longliners.
 
