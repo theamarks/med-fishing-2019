@@ -258,6 +258,7 @@ Map_other_trawl_longline
 - Maps
   - Add inset map
   - Reorder display order of points (purple, teal, yellow)
+- Describe a few patterns in the data/maps and comment on how these trends might be impacted by AIS use
 - Polish output tables
 - Add tables to repo README
 - Convert to Quarto doc
