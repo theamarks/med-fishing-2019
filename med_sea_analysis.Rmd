@@ -110,25 +110,33 @@ analyst_fishing_data_sp@proj4string
 
 # Clip fishing points within closure polygon
 fishing_in_closure_sp <- analyst_fishing_data_sp[closure_poly_sp,]
-plot(fishing_in_closure_sp)
+#plot(fishing_in_closure_sp)
 fishing_in_closure <- fishing_in_closure_sp@data # extract data from sp points dataframe
 # Summarize fishing hours in closure polygon
 fish_hrs_closure_sum <- fishing_in_closure %>%
   group_by(fishing_class) %>% #group data by gear type
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
-fish_hrs_closure_sum
+
+knitr::kable(fish_hrs_closure_sum, 
+             caption = "Total Fishing Hours by fishing class within 'closure' polygon",
+             col.names = gsub("[_]", " ", names(fish_hrs_closure_sum))) %>%
+  kableExtra::kable_styling(full_width = F)
 
 # write_csv(fish_hrs_closure_sum, "./output/2019_FishHrs_Closure_ByGear.csv")
 
 # clip fishing points within other polygon
 fishing_in_other_sp <- analyst_fishing_data_sp[other_poly_sp,]
-plot(fishing_in_other_sp)
+#plot(fishing_in_other_sp)
 fishing_in_other <- fishing_in_other_sp@data # extract data from sp points dataframe
 # summarize fishing hours in other polygon
 fish_hrs_other_sum <- fishing_in_other %>% 
   group_by(fishing_class) %>% #group data by gear type
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
-fish_hrs_other_sum
+
+knitr::kable(fish_hrs_other_sum , 
+             caption = "Total Fishing Hours by fishing class within 'other' polygon",
+             col.names = gsub("[_]", " ", names(fish_hrs_other_sum ))) %>%
+  kableExtra::kable_styling(full_width = F)
 
 write_csv(fish_hrs_other_sum, file.path(out_path, "2019_FishHrs_Other_ByGear.csv"))
 
