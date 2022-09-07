@@ -13,7 +13,7 @@ Coding test for Fisheries Analyst position at Global Fishing Watch 2021.
 
 ## Background
 
-Data files are fishing activity in the Mediterranean Sea from 2019. Fishing hours are binned on a 0.05 degree grid. Shapefiles are of closed fishing areas. 
+Data files are fishing activity in the Mediterranean Sea from 2019. Fishing hours are binned on a 0.05 degree grid. Shapefiles are of closed fishing areas.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE, message = FALSE, results = "hide", warning = FALSE)
@@ -42,7 +42,6 @@ dir.create("./output") # create output directory
 data_path <- file.path("data") # data path
 out_path <- file.path("output") # output path
 ```
-
 
 ```{r import_data}
 # Import data
@@ -126,7 +125,6 @@ knitr::kable(fish_hrs_closure_sum,
 
 # write_csv(fish_hrs_closure_sum, "./output/2019_FishHrs_Closure_ByGear.csv")
 ```
-
 
 ```{r fish_hours_other, results='markup'}
 # clip fishing points within other polygon
@@ -270,10 +268,9 @@ Map_other_trawl_longline
 
 ## Next Steps
 
-- Maps
-  - Add inset map
-  - Reorder display order of points (purple, teal, yellow)
-- Describe a few patterns in the data/maps and comment on how these trends might be impacted by AIS use
-- Polish output tables
-- Add tables to repo README
-- Convert to Quarto doc
+-   Maps
+    -   Add inset map
+    -   Reorder display order of points (purple, teal, yellow)
+-   Describe a few patterns in the data/maps and comment on how these trends might be impacted by AIS use
+-   Polish output tables
+-   Add tables to repo README
