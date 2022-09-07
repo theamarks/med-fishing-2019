@@ -118,7 +118,7 @@ fish_hrs_closure_sum <- fishing_in_closure %>%
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
 
 knitr::kable(fish_hrs_closure_sum, 
-             caption = "Total Fishing Hours by fishing class within 'closure' polygon",
+             caption = "Total Fishing Hours by Fishing Class Within 'Closure' Polygon",
              col.names = gsub("[_]", " ", names(fish_hrs_closure_sum))) %>%
   kableExtra::kable_styling(full_width = F)
 
@@ -134,7 +134,7 @@ fish_hrs_other_sum <- fishing_in_other %>%
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
 
 knitr::kable(fish_hrs_other_sum , 
-             caption = "Total Fishing Hours by fishing class within 'other' polygon",
+             caption = "Total Fishing Hours by Fishing Class Within 'Other' Polygon",
              col.names = gsub("[_]", " ", names(fish_hrs_other_sum ))) %>%
   kableExtra::kable_styling(full_width = F)
 
@@ -152,7 +152,7 @@ fish_hrs_both_sum <- fishing_in_both %>%
   summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
 
 knitr::kable(fish_hrs_both_sum, 
-             caption = "Total Fishing Hours by fishing class within 'closure' and 'other' polygons",
+             caption = "Total Fishing Hours by Fishing Class Within 'Closure' and 'Other' Polygons",
              col.names = gsub("[_]", " ", names(fish_hrs_both_sum))) %>%
   kableExtra::kable_styling(full_width = F)
 
