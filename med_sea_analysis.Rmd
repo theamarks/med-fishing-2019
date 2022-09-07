@@ -1,0 +1,128 @@
+---
+title: "Mediterranean Sea Fishing Activity 2019"
+author: "Althea Marks"
+date: "2021_5_24"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, message = FALSE, results = "hide", warning = FALSE)
+```
+
+```{r load_libraries}
+library(readr) # read in csv
+library(magrittr) # pipe function
+library(tidyverse) # ggplot and data wrangling
+library(sp) # working with spatial data
+library(rgdal) # working with vector data
+library(maptools)
+library(rgeos)
+library(maps) # graphing maps
+library(rnaturalearth) # map data source, website with descriptions
+library(sf) # working with coordinates in ggplot
+library(ggspatial)
+library(viridisLite) # color
+```
+
+```{r import_data}
+analyst_fishing_data <- read_csv("./data/analyst_fishing_data.csv")
+# Look at dimensions of data
+dim(analyst_fishing_data)
+# Look at summary stats of data
+summary(analyst_fishing_data)
+
+### Read in 2 closure shapefiles from Rproject
+closure_poly_sp <- readOGR("./data/VME-DB_VME_GFCM_1")
+# Look at polygon
+#plot(closure_poly_sp)
+
+other_poly_sp <- readOGR("./data/VME-DB_VME_GFCM_4")
+# Look at polygon
+#plot(other_poly_sp)
+```
+
+## Question 1
+
+Calculate total fishing hours, by gear type inside both closure areas in 2019.
+
+```{r Q1, results="markup"}
+# create dataframe from shapefile for ggplot
+closure_poly_df <- fortify(closure_poly_sp)
+other_poly_df <- fortify(other_poly_sp)
+
+# Graph fishing activity by fishing_class and display closure polygons
+test_plot <- ggplot() +
+  geom_point(data = analyst_fishing_data,
+             aes(x = lon_bin, y = lat_bin, color = fishing_class)) +
+  geom_polygon(data = closure_poly_df,
+               aes(x = long, y = lat), color = 'black', fill = NA) +
+  geom_polygon(data = other_poly_df,
+               aes(x = long, y = lat), color = "black", fill = NA) +
+  theme_bw() +
+  labs(x = "Longitude", y = "Latitude")
+
+# test_plot
+
+# Convert fishing dataframe to SpatialPointsDataFrame class with coordinates from columns
+# Remember: Longitude listed first, then Latitude
+analyst_fishing_data_sp <- analyst_fishing_data # create new object
+coordinates(analyst_fishing_data_sp) <- ~ lon_bin + lat_bin # assign long & lat to coordinates
+#plot(analyst_fishing_data_sp)
+
+# Check CRS in closure & other_area shp files and fishing data
+closure_poly_sp@proj4string
+other_poly_sp@proj4string
+analyst_fishing_data_sp@proj4string
+# closure_poly_sp & other_poly_sp have same CRS, analyst_fishing_data_sp has no CRS
+
+# Assign CRS to analyst_fishing_data_sp from closure_poly_sp
+proj4string(analyst_fishing_data_sp) <- proj4string(closure_poly_sp)
+# Check if same and assigned properly
+analyst_fishing_data_sp@proj4string 
+
+# Clip fishing points within closure polygon
+fishing_in_closure_sp <- analyst_fishing_data_sp[closure_poly_sp,]
+plot(fishing_in_closure_sp)
+fishing_in_closure <- fishing_in_closure_sp@data # extract data from sp points dataframe
+# Summarize fishing hours in closure polygon
+fish_hrs_closure_sum <- fishing_in_closure %>%
+  group_by(fishing_class) %>% #group data by gear type
+  summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
+fish_hrs_closure_sum
+
+# write_csv(fish_hrs_closure_sum, "./output/2019_FishHrs_Closure_ByGear.csv")
+
+# clip fishing points within other polygon
+fishing_in_other_sp <- analyst_fishing_data_sp[other_poly_sp,]
+plot(fishing_in_other_sp)
+fishing_in_other <- fishing_in_other_sp@data # extract data from sp points dataframe
+# summarize fishing hours in other polygon
+fish_hrs_other_sum <- fishing_in_other %>% 
+  group_by(fishing_class) %>% #group data by gear type
+  summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
+fish_hrs_other_sum
+
+write_csv(fish_hrs_other_sum, "./output/2019_FishHrs_Other_ByGear.csv")
+
+# Combine clipped fishing data from both closed areas into single dataframe
+fishing_in_both <- rbind(fishing_in_closure, fishing_in_other)
+
+# Check what years are represented
+unique(fishing_in_both$year)
+
+# Summarize fishing within the 2 polygons ("closure", "other")
+fish_hrs_both_sum <- fishing_in_both %>% 
+  group_by(fishing_class) %>% # group data by gear type
+  summarise(total_fish_hrs = sum(fishing_hours)) # sum fishing hours by gear type
+fish_hrs_both_sum
+
+# Save .csv of findings to Rproject folder
+# write_csv(fish_hrs_both_sum, "./output/2019_FishHrs_BothClosure_ByGear.csv")
+```
+
